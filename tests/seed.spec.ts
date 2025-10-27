@@ -31,6 +31,8 @@ export const test = base.extend<CustomFixtures>({
   // Fixture to automatically navigate to home page
   homePage: async ({ page }, use) => {
     await page.goto('/');
+    // Wait for the page to be ready
+    await page.waitForLoadState('domcontentloaded');
     await use();
   },
 
@@ -119,7 +121,9 @@ test.describe('Seed Test Suite', () => {
     await page.goto('/');
     
     // Basic assertion to ensure the page loads
-    await expect(page).toHaveTitle(/.*/, { timeout: 10000 });
+    // Note: Using permissive regex as actual page title may vary
+    // Replace with specific title pattern once known: e.g., /Sau Portal|Portal/
+    await expect(page).toHaveTitle(/.+/, { timeout: 10000 });
     
     // Placeholder comment: generate code here.
     // The agent will replace this section with actual test steps
