@@ -213,3 +213,27 @@ When adding new tests:
 ## License
 
 ISC
+
+## Test secrets / environment variables
+
+Automated tests that need authenticated sessions (for example the student login used by the `loggedInStudent` fixture) should read credentials from environment variables instead of committing them in source control.
+
+The following environment variables are used by the test fixtures:
+
+- `TEST_STUD_USERNAME` — username for the test student (example: `test-stud`)
+- `TEST_STUD_PASSWORD` — password for the test student
+
+Do NOT commit a `.env` file with real credentials. Instead, create a local `.env` (which should be added to `.gitignore`) or configure the variables in your CI environment (GitHub Actions, GitLab CI, etc.). An example file is provided as `.env.example`.
+
+Example (local development):
+
+1. Create a file named `.env` in the project root with the following contents (do NOT commit this file):
+
+```
+TEST_STUD_USERNAME=your-real-test-username
+TEST_STUD_PASSWORD=your-real-test-password
+```
+
+2. Start tests normally. Playwright/Node will pick up these variables via `process.env`.
+
+If you prefer to use secrets in CI, set `TEST_STUD_USERNAME` and `TEST_STUD_PASSWORD` in your CI project's secret storage and they will be available to Playwright runs on CI.
